@@ -10,6 +10,7 @@ import IndexStack from "./IndexStack";
 import DetailsStack from "./DetailStack";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import { Icon } from "react-native-elements";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +61,12 @@ export default function AppNavigation() {
         component={InformationScreen}
         options={{ title: "Información", headerShown:true }}
       />
+
+      <Tab.Screen
+        name="profile"
+        component={ProfileScreen}
+        options={{ title: "Perfil",headerShown:true}}
+      />
     </Tab.Navigator>
   );
 }
@@ -73,6 +80,9 @@ function showIcons(route, color, size){
   }
   if(route.name=="info"){
     icono="information"
+  }
+  if(route.name=="profile"){
+    icono="cont"
   }
   return(
     <Icon type="material-community"
