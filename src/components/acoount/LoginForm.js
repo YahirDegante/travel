@@ -2,40 +2,61 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Input, Icon, Button } from "react-native-elements";
 import * as Yup from "yup";
-import { useFormik } from 'formik';
+import { useFormik } from "formik";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import { async } from "@firebase/util";
 
 export default function LoginForm() {
   const [showPass, setShowPass] = useState(false);
+  const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email('Invalid email address')
-        .required('Email is required'),
-      password: Yup.string()
-        .required('Password is required')
-        .min(8, 'Password must be at least 8 characters long')
+        .email("Email no valido")
+        .required("Email obligatorio"),
+      password: Yup.string().required("Contraseña Obligatoria"),
     }),
-    onSubmit: (values, { setSubmitting }) => {
-      // Submit login form
-    }
+    validateOnChange: false,
+    onSubmit: async (formValue) => {
+      try {
+        const auth = getAuth();
+        await signInWithEmailAndPassword(
+          auth,
+          formValue.email,
+          formValue.password
+        );
+        navigation.navigate("indexXS")
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Usuario y/o comtraseña incorrectos",
+        });
+      }
+    },
+    // onSubmit: (values, { setSubmitting }) => {
+    //   // Submit login form
+    // }
   });
 
   const showHidePass = () => {
     setShowPass(!showPass);
-  }
+  };
 
   return (
     <View style={styles.viewContent}>
       <Input
         placeholder="Correo electronico"
         containerStyle={styles.input}
-        onChangeText={formik.handleChange('email')}
-        onBlur={formik.handleBlur('email')}
+        onChangeText={formik.handleChange("email")}
+        onBlur={formik.handleBlur("email")}
         value={formik.values.email}
         errorMessage={formik.touched.email && formik.errors.email}
         rightIcon={
@@ -46,8 +67,8 @@ export default function LoginForm() {
         placeholder="Contraseña"
         secureTextEntry={!showPass}
         containerStyle={styles.input}
-        onChangeText={formik.handleChange('password')}
-        onBlur={formik.handleBlur('password')}
+        onChangeText={formik.handleChange("password")}
+        onBlur={formik.handleBlur("password")}
         value={formik.values.password}
         errorMessage={formik.touched.password && formik.errors.password}
         rightIcon={
@@ -64,10 +85,10 @@ export default function LoginForm() {
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
         onPress={formik.handleSubmit}
-        loading={formik.isSubmitting}
+        //loading={formik.isSubmitting}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
