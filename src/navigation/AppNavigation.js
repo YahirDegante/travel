@@ -63,19 +63,7 @@ export default function AppNavigation() {
     </Tab.Navigator>
    
   ):(
-    <Tab.Navigator screenOptions={({route})=>({
-      headerShown:false,
-      tabBarActiveTintColor:"red",
-      tabBarInactiveTintColor:"green",
-      //tabBarIcon:()=> showIcons()
-      tabBarIcon:({color, size})=> showIcons(route,color,size)
-      })}>
-      <Tab.Screen
-        name="index"
-        component={IndexStack}
-        options={{ title: "Inicio"}}
-      />
-    </Tab.Navigator>
+    <IndexStack/>
   )
 }
 function showIcons(route, color, size){
