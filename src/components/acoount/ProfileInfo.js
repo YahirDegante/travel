@@ -27,9 +27,13 @@ export default function ProfileInfo() {
         const storage = getStorage();
         const refStorage = ref(storage, `imgProfile/${uid}`)
         uploadBytes(refStorage, blob).then((snapshot)=>{
-            console.log(snapshot.metadata)
-        })
+            //console.log(snapshot.metadata)
+        }) 
     }   
+        const updatePhoto = (imegePath)=>{
+            console.log(imegePath)
+    };
+   
   return (
     <View style={styles.viewPhoto}>
       <Avatar
