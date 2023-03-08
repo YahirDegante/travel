@@ -49,11 +49,11 @@ export default function AppNavigation() {
         options={{ title: "Detalles" }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="info"
         component={InformationScreen}
         options={{ title: "Información", headerShown:true }}
-      />
+      /> */}
 
       <Tab.Screen
         name="profile"
@@ -78,7 +78,7 @@ function showIcons(route, color, size){
     icono="information"
   }
   if(route.name=="profile"){
-    icono="cont"
+    icono="account"
   }
   return(
     <Icon type="material-community"
