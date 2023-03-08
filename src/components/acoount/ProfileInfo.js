@@ -23,6 +23,12 @@ export default function ProfileInfo() {
         //console.log(uri)
         const response = await fetch(uri);
         const blob = await response.blob();
+        //console.log(blob)
+        const storage = getStorage();
+        const refStorage = ref(storage, `imgProfile/${uid}`)
+        uploadBytes(refStorage, blob).then((snapshot)=>{
+            console.log(snapshot.metadata)
+        })
     }   
   return (
     <View style={styles.viewPhoto}>
