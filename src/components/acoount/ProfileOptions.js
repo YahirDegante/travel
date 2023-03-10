@@ -1,11 +1,27 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, {useState}from "react";
 import { Icon, ListItem } from "react-native-elements";
 import { map } from "lodash";
+import Modal from "../common/Modal";
 
 export default function ProfileOptions() {
-  const optionsMenu = getOptionsMenu();
-  console.log(optionsMenu);
+    const [showModal, setshowModal] = useState(false);
+    const [conteined, setConteined] = useState(null)
+    const onClose = ()=> setshowModal((prevState)=>!prevState)
+  const selectComponent = (key)=> {
+    //console.log("selectComponnet->", key)
+    if(key == "displayName"){
+        //console.log("Componente para nombre")
+        setConteined(<Text>Componente para nombre</Text>)
+    }
+    if(key == "password"){
+        //console.log("Componente para contraseña")
+        setConteined(<Text>Componente para contraseña</Text>)
+    }
+    onClose()
+  }
+    const optionsMenu = getOptionsMenu(selectComponent);
+  //console.log(optionsMenu);
   return (
     <View>
       {map(optionsMenu, (option, index) => (
@@ -25,11 +41,15 @@ export default function ProfileOptions() {
           />
         </ListItem>
       ))}
+      <Modal visible={showModal} close={onClose}>
+        {/* <Text>Holaaaa</Text> */}
+        {conteined}
+      </Modal>
     </View>
   );
 }
 
-function getOptionsMenu() {
+function getOptionsMenu(selectComponent) {
   return [
     {
       title: "Cambiar nombre",
@@ -37,7 +57,8 @@ function getOptionsMenu() {
       nameIconLeft: "account-circle",
       nameIconRight: "chevron-right",
       colorIocn: "#ccc",
-      onPress: () => console.log("nombre")
+      //onPress: () => console.log("nombre")
+      onPress: ()=> selectComponent("displayName")
     },
     {
       title: "Cambiar contraseña",
@@ -45,7 +66,8 @@ function getOptionsMenu() {
       typeIcon: "material-community",
       nameIconRight: "chevron-right",
       colorIocn: "#ccc",
-      onPress: () => console.log("contraseña")
+      //onPress: () => console.log("contraseña")
+      onPress: ()=> selectComponent("password")
     },
   ];
 }
