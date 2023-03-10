@@ -1,12 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import {getAuth, signOut} from "firebase/auth"
 import { useNavigation } from '@react-navigation/native'
 import ProfileInfo from '../components/acoount/ProfileInfo'
+import Loading from '../components/common/Loading'
+import ProfileOptions from '../components/acoount/ProfileOptions'
 
 export default function ProfileScreen() {
     const navigation = useNavigation();
+    const [visible, setvisible] = useState(false)
+    const [textLoading, settextLoading] = useState("")
     const cerrarSesion = async()=>{
     //console.log("cerrar sesion")
     const auth = getAuth();
@@ -15,13 +19,15 @@ export default function ProfileScreen() {
   }
     return (
     <View>
-      <ProfileInfo/>
+      <ProfileInfo settextLoading={settextLoading} setvisible={setvisible}/>
+      <ProfileOptions/>
       <Button
       title="cerrar sesion"
       onPress={cerrarSesion}
       buttonStyle={styles.button}
       titleStyle={styles.title}
       />
+      <Loading visible={visible} text={textLoading}/>
     </View>
   )
 }
