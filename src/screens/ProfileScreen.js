@@ -11,6 +11,9 @@ export default function ProfileScreen() {
     const navigation = useNavigation();
     const [visible, setvisible] = useState(false)
     const [textLoading, settextLoading] = useState("")
+    const [reLoad, setReLaoad] = useState(false)
+    const onReload  = ()=> setReLaoad((prevState) => !prevState)
+    
     const cerrarSesion = async()=>{
     //console.log("cerrar sesion")
     const auth = getAuth();
@@ -20,7 +23,7 @@ export default function ProfileScreen() {
     return (
     <View>
       <ProfileInfo settextLoading={settextLoading} setvisible={setvisible}/>
-      <ProfileOptions/>
+      <ProfileOptions onReload={onReload}/>
       <Button
       title="cerrar sesion"
       onPress={cerrarSesion}

@@ -3,8 +3,11 @@ import React, {useState}from "react";
 import { Icon, ListItem } from "react-native-elements";
 import { map } from "lodash";
 import Modal from "../common/Modal";
+import ChangeNameForm from "./ChangeNameForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 
-export default function ProfileOptions() {
+export default function ProfileOptions(props) {
+  const {onReload} = props;
     const [showModal, setshowModal] = useState(false);
     const [conteined, setConteined] = useState(null)
     const onClose = ()=> setshowModal((prevState)=>!prevState)
@@ -12,11 +15,13 @@ export default function ProfileOptions() {
     //console.log("selectComponnet->", key)
     if(key == "displayName"){
         //console.log("Componente para nombre")
-        setConteined(<Text>Componente para nombre</Text>)
+        //setConteined(<Text>Componente para nombre</Text>)
+        setConteined(<ChangeNameForm close={onClose} onReload={onReload}/>);
     }
     if(key == "password"){
         //console.log("Componente para contraseña")
-        setConteined(<Text>Componente para contraseña</Text>)
+        //setConteined(<Text>Componente para contraseña</Text>)
+        setConteined(<ChangePasswordForm close={onClose} />)
     }
     onClose()
   }
