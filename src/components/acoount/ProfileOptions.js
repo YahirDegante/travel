@@ -1,36 +1,42 @@
 import { View, Text } from "react-native";
-import React, {useState}from "react";
+import React, { useState } from "react";
 import { Icon, ListItem } from "react-native-elements";
 import { map } from "lodash";
 import Modal from "../common/Modal";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangePasswordForm from "./ChangePasswordForm";
+import ChangeEmailForm from "./ChangeEmailForm";
 
 export default function ProfileOptions(props) {
-  const {onReload} = props;
-    const [showModal, setshowModal] = useState(false);
-    const [conteined, setConteined] = useState(null)
-    const onClose = ()=> setshowModal((prevState)=>!prevState)
-  const selectComponent = (key)=> {
+  const { onReload } = props;
+  const [showModal, setshowModal] = useState(false);
+  const [conteined, setConteined] = useState(null);
+  const onClose = () => setshowModal((prevState) => !prevState);
+  const selectComponent = (key) => {
     //console.log("selectComponnet->", key)
-    if(key == "displayName"){
-        //console.log("Componente para nombre")
-        //setConteined(<Text>Componente para nombre</Text>)
-        setConteined(<ChangeNameForm close={onClose} onReload={onReload}/>);
+    if (key == "displayName") {
+      //console.log("Componente para nombre")
+      //setConteined(<Text>Componente para nombre</Text>)
+      setConteined(<ChangeNameForm close={onClose} onReload={onReload} />);
     }
-    if(key == "password"){
-        //console.log("Componente para contraseña")
-        //setConteined(<Text>Componente para contraseña</Text>)
-        setConteined(<ChangePasswordForm close={onClose} />)
+    if (key == "password") {
+      //console.log("Componente para contraseña")
+      //setConteined(<Text>Componente para contraseña</Text>)
+      setConteined(<ChangePasswordForm close={onClose} />);
     }
-    onClose()
-  }
-    const optionsMenu = getOptionsMenu(selectComponent);
+    if (key == "email") {
+      //console.log("Componente para contraseña")
+      //setConteined(<Text>Componente para contraseña</Text>)
+      setConteined(<ChangeEmailForm close={onClose} />);
+    }
+    onClose();
+  };
+  const optionsMenu = getOptionsMenu(selectComponent);
   //console.log(optionsMenu);
   return (
     <View>
       {map(optionsMenu, (option, index) => (
-        <ListItem key={index} onPress={ option.onPress}>
+        <ListItem key={index} onPress={option.onPress}>
           <Icon
             type={option.typeIcon}
             name={option.nameIconLeft}
@@ -63,7 +69,7 @@ function getOptionsMenu(selectComponent) {
       nameIconRight: "chevron-right",
       colorIocn: "#ccc",
       //onPress: () => console.log("nombre")
-      onPress: ()=> selectComponent("displayName")
+      onPress: () => selectComponent("displayName"),
     },
     {
       title: "Cambiar contraseña",
@@ -72,7 +78,16 @@ function getOptionsMenu(selectComponent) {
       nameIconRight: "chevron-right",
       colorIocn: "#ccc",
       //onPress: () => console.log("contraseña")
-      onPress: ()=> selectComponent("password")
+      onPress: () => selectComponent("password"),
+    },
+    {
+      title: "Cambiar correo",
+      nameIconLeft: "email-outline",
+      typeIcon: "material-community",
+      nameIconRight: "chevron-right",
+      colorIocn: "#ccc",
+      //onPress: () => console.log("contraseña")
+      onPress: () => selectComponent("email"),
     },
   ];
 }
