@@ -27,7 +27,7 @@ export default function ProfileOptions(props) {
     if (key == "email") {
       //console.log("Componente para contraseña")
       //setConteined(<Text>Componente para contraseña</Text>)
-      setConteined(<ChangeEmailForm close={onClose} />);
+      setConteined(<ChangeEmailForm close={onClose} onReload={onReload} />);
     }
     onClose();
   };

@@ -1,72 +1,95 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { Button, Input } from "react-native-elements";
+import { Icon } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Toast } from "react-native-toast-message";
-import { color } from "react-native-reanimated";
+import Toast from "react-native-toast-message";
+import {
+  getAuth,
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 
 export default function ChangeEmailForm(props) {
-  const { close } = props;
+  const { onClose, onReload } = props;
+
   const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
     initialValues: {
-      displayEmail: "",
-      password: "",
+      email: "",
+      confirmPass: "",
     },
+
     validationSchema: Yup.object({
-        displayEmail: Yup.string()
-        .email("Email no valido")
-        .required("Email obligatorio"),
-      password: Yup.string().required("Contraseña es requerda"),
+      email: Yup.string().email("Correo electrónico no válido").required("Correo electrónico requerido"),
+      confirmPass: Yup.string().required("Contraseña requerida"),
     }),
     validateOnChange: false,
-    onSubmit: async (formValue) => {
-      console.log(formValue);
-      close();
-    //   try {
-    //     console.log(formValue);
-    //     close();
-    //   } catch (error) {
-    //     Toast.show({
-    //       type: "error",
-    //       position: "bottom",
-    //       text1: "Error al cambiar correo",
-    //     });
-    //   }
+
+    onSubmit: async (formData) => {
+      try {
+        console.log(formData);
+        const currentUser = getAuth().currentUser;
+        const credential = EmailAuthProvider.credential(
+            currentUser.email,
+            formData.confirmPass
+        );
+        await reauthenticateWithCredential(currentUser, credential);
+        await updateEmail(currentUser, formData.email);
+        Toast.show({
+            type: "success",
+            position: "bottom",
+            text1: "Correo electrónico actualizado correctamente",
+        });
+        onReload();
+        onClose();
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Error al actualizar correo electrónico",
+        });
+      }
     },
   });
+
   const showHidePass = () => {
     setShowPass(!showPass);
   };
+
   return (
     <View style={styles.viewForm}>
       <Input
-        placeholder="Ingresa el nuevo correo"
+        placeholder="Nuevo correo electrónico"
         containerStyle={styles.input}
         rightIcon={{
           type: "material-community",
-          name: "account-circle-outline",
+          name: "at",
           color: "#c2c2c2",
         }}
-        onChangeText={(text) => formik.setFieldValue("displayEmail", text)}
-        errorMessage={formik.errors.displayEmail}
+        onChangeText={(text) => formik.setFieldValue("email", text)}
+        errorMessage={formik.errors.email}
       />
       <Input
-        placeholder="Ingresa Contraseña Actual"
+        placeholder="Confirmar contraseña"
         secureTextEntry={!showPass}
         containerStyle={styles.input}
-        rightIcon={{
-          type: "material-community",
-          name: showPass ? "eye-off-outline" : "eye-outline",
-          color: "#c2c2c2",
-          onPress: showHidePass,
-        }}
-        onChangeText={(text) => formik.setFieldValue("password", text)}
-        errorMessage={formik.errors.password}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name={showPass ? "eye-off-outline" : "eye-outline"}
+            iconStyle={styles.icon}
+            color="#c2c2c2"
+            onPress={showHidePass}
+          />
+        }
+        onChangeText={(text) => formik.setFieldValue("confirmPass", text)}
+        errorMessage={formik.errors.confirmPass}
       />
       <Button
-        title="Actualizar correo"
+        title="Cambiar correo"
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btnStyle}
         onPress={formik.handleSubmit}
@@ -77,18 +100,18 @@ export default function ChangeEmailForm(props) {
 }
 
 const styles = StyleSheet.create({
-    viewForm: {
-        alignItems: "center",
-        paddingVertical: 10,
-      },
-      input: {
-        marginBottom: 10,
-      },
-      btnContainer: {
-        marginTop: 15,
-        width: "95%",
-      },
-      btnStyle: {
-        backgroundColor: "#0d5bd7",
-      },
+  viewForm: {
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  input: {
+    marginBottom: 10,
+  },
+  btnContainer: {
+    marginTop: 15,
+    width: "95%",
+  },
+  btnStyle: {
+    backgroundColor: "#0d5bd7",
+  },
 });
