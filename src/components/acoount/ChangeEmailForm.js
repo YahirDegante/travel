@@ -13,7 +13,7 @@ import {
 } from "firebase/auth";
 
 export default function ChangeEmailForm(props) {
-  const { onClose, onReload } = props;
+  const { close, onReload } = props;
 
   const [showPass, setShowPass] = useState(false);
   const formik = useFormik({
@@ -44,7 +44,7 @@ export default function ChangeEmailForm(props) {
             text1: "Correo electrónico actualizado correctamente",
         });
         onReload();
-        onClose();
+        close();
       } catch (error) {
         Toast.show({
           type: "error",
