@@ -10,6 +10,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Carousel from "react-native-snap-carousel";
 import { Rating, Icon } from "react-native-elements";
 import Modal from "../components/common/Modal";
+import Video from "../components/common/Video"
 
 export default function DetailsScreen(props) {
   const { navigation } = props;
@@ -43,11 +44,12 @@ export default function DetailsScreen(props) {
   const playVideo =(video)=>{
     // console.log("reproducir Video...")
     // console.log(video)
-    setRenderComponent(<Text>Aqui se ve el video</Text>)
+    setRenderComponent(<Video idVideo={video}/>)
     onClose()
   }
   const showLocation=()=>{
-    console.log("Mostrando locacion...")
+    setRenderComponent(<Text>Aui va el mapa</Text>)
+    setShowModal(true)
   }
 
   const renderItem = ({ index, item }) => {
