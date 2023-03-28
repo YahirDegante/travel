@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, Button, ImageBackground, Image } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import Carousel from "react-native-snap-carousel";
 
@@ -27,13 +27,19 @@ export default function DetailsScreen(props) {
   useEffect(() => {
     getPlaces();
   }, []);
-  const renderItem = ()=>{
+
+  const renderItem = ({index, item})=>{
     return(
       <View style={styles.card}>
-        <Text>Hola</Text>
+        <Image
+        style={styles.img}
+        source={{uri: item.image}} 
+        />
+        <Text>{item.name}</Text>
       </View>
     )
   }
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -77,5 +83,10 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     borderWidth:1.5,
     borderColor: "#0D5BD7"
+  },
+  img:{
+    height: "50%",
+    width:"90%",
+    borderRadius: 5,
   }
 });
