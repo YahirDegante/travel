@@ -11,6 +11,7 @@ import Carousel from "react-native-snap-carousel";
 import { Rating, Icon } from "react-native-elements";
 import Modal from "../components/common/Modal";
 import Video from "../components/common/Video"
+import Location from "../components/common/Location"
 
 export default function DetailsScreen(props) {
   const { navigation } = props;
@@ -48,7 +49,7 @@ export default function DetailsScreen(props) {
     onClose()
   }
   const showLocation=()=>{
-    setRenderComponent(<Text>Aui va el mapa</Text>)
+    setRenderComponent(<Location/>)
     setShowModal(true)
   }
 
