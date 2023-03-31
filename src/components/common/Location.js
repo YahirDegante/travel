@@ -9,8 +9,14 @@ export default function Location() {
     latitudeDelta: 0.0522,
     longitudeDelta: 0.0521,
   });
+const [newPsotion,setNewPosition]= useState({
+  latitude: 18.8502885,
+    longitude: -99.2029242
+})
+
   const obtainLocation = (coordinate) => {
     console.log("las coodenadas son: ", coordinate);
+    setNewPosition(coordinate)
   };
   const onRegionChange = (region) => {
     console.log(region);
